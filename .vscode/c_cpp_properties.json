@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "intelliSenseMode": "clang-x64",
+            "name": "Win32",
+            "cppStandard": "c++11",
+            "cStandard": "c99",
+            "compilerPath": "C:/RT-ThreadStudio/repo/Extract/ToolChain_Support_Packages/ARM/GNU_Tools_for_ARM_Embedded_Processors/5.4.1/bin/arm-none-eabi-gcc",
+            "includePath": [
+                
+            ],
+            "compileCommands": "${workspaceFolder}/Debug/compile_commands.json",
+            // "defines": [
+            //     "HAVE_CCONFIG_H",
+            //     "RT_USING_NEWLIB"
+            // ],
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}
