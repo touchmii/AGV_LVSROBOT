@@ -39,7 +39,7 @@ set(HAL_SRCS
     ${HAL_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c
     ${HAL_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c
     ${HAL_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c
-    # STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_iwdg.c
+    ${HAL_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_iwdg.c
     # STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_wwdg.c
     # STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c
     # STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c
@@ -58,7 +58,7 @@ set(HAL_SRCS
     # STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
     # STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc.c
     # STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc_ex.c
-    # STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c
+    STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c
     # STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dma2d.c
     # STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dsi.c
     CACHE INTERNAL "")

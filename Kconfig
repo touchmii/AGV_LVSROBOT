@@ -13,10 +13,10 @@ config RTT_DIR
 config PKGS_DIR
     string
     option env="PKGS_ROOT"
-    default "packages"
+    default "rt-thread/packages"
 
 source "$RTT_DIR/Kconfig"
-#source "$PKGS_DIR/Kconfig"
+source "$RTT_DIR/packages/packages/Kconfig"
 #source "$PKGS_DIR/packages/misc/samples/Kconfig"
 
 config RT_STUDIO_BUILT_IN

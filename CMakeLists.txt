@@ -32,11 +32,13 @@ foreach(define ${RT_CONFIG})
 endforeach()
 
 # message(${RT_CONFIG})
-if(${CMAKE_BUILD_TYPE} STREQUAL RelWithDebInfo)
-  set(mfloat-flag "soft")
-else()
-  set(mfloat-flag "hard")
-endif()
+
+
+# if(${CMAKE_BUILD_TYPE} STREQUAL RelWithDebInfo)
+#   set(mfloat-flag "soft")
+# else()
+# endif()
+set(mfloat-flag "hard")
 
 # 一定要在添加子目录前定义参数， 相当于使用#define STM32F407xx，一定要定义此参数，否则HAL库无法判断芯片类型
 # -DSOC_SERIES_STM32F4 -DSTM32F407xx -DUSE_HAL_DRIVER
@@ -58,7 +60,7 @@ set(CMAKE_ASM_FLAGS
 # -Wl,-gc-sections --specs=nano.specs --specs=nosys.specs,-cref,-u,Reset_Handler
 # -T${CMAKE_SOURCE_DIR}/linkerscripts/STM32F407IG/link.lds" )
 set(CMAKE_EXE_LINKER_FLAGS
-    " -mcpu=cortex-m4 -mthumb -ffunction-sections -fdata-sections -Wl,--gc-sections,-Map=rtthread.map,-cref,-u,Reset_Handler -T ${CMAKE_SOURCE_DIR}/linkscripts/STM32F407IG/link.lds"
+    " -mcpu=cortex-m4 -mthumb -ffunction-sections -fdata-sections -Wl,--gc-sections,-Map=${CMAKE_PROJECT_NAME}.map,-cref,-u,Reset_Handler -T ${CMAKE_SOURCE_DIR}/linkscripts/STM32F407IG/link.lds"
 )
 # set(CMAKE_EXE_LINKER_FLAGS " -Wl,-Map=${CMAKE_PROJECT_NAME}.map
 # -Wl,-gc-sections --specs=nano.specs --specs=nosys.specs

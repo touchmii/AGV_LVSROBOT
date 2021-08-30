@@ -15,9 +15,13 @@
 #include "cm_backtrace.h"
 #include <rtdbg.h>
 
-#define APPNAME "AGV_YS-F4"
+#define APPNAME "AGV_RTOS"
 #define HARDWARE_VERSION "V1.0.0"
 #define SOFTWARE_VERSION "V0.0.1"
+
+#define LOG_TAG     "main.c"     // 该模块对应的标签。不定义时，默认：NO_TAG
+#define LOG_LVL     LOG_LVL_DBG   // 该模块对应的日志输出级别。不定义时，默认：调试级别
+#include <ulog.h>                 // 必须在 LOG_TAG 与 LOG_LVL 下面
 
 void w25q128_mount(void) {
   rt_device_t dev;
@@ -40,6 +44,12 @@ int main(void) {
     // LOG_D("Hello RT-Thread!");
     rt_thread_mdelay(1000);
     // rt_kprintf("xxxxx");
+    // LOG_D("LOG_D(%d): RT-Thread is an open source IoT operating system from China.", count);
+    // LOG_I("LOG_I(%d): RT-Thread is an open source IoT operating system from China.", count);
+    // LOG_W("LOG_W(%d): RT-Thread is an open source IoT operating system from China.", count);
+    // LOG_E("LOG_E(%d): RT-Thread is an open source IoT operating system from China.", count);
+    // LOG_RAW("LOG_RAW(%d): RT-Thread is an open source IoT operating system from China.", count);
+
   }
 
   return RT_EOK;

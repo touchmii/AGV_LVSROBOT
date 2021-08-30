@@ -21,8 +21,10 @@ set(xdrivers_SRC
     # ${Drivers_DIR}/drv_flash/drv_flash_f4.c
     # ${Drivers_DIR}/drv_flash/drv_flash_f7.c
     # ${Drivers_DIR}/drv_flash/drv_flash_l4.c ${Drivers_DIR}/drv_crypto.c
-    # ${Drivers_DIR}/drv_wdt.c ${Drivers_DIR}/drv_sdio.c
-    ${Drivers_DIR}/drv_usbd.c
+    ${Drivers_DIR}/drv_wdt.c 
+    # ${Drivers_DIR}/drv_sdio.c
+    # ${Drivers_DIR}/drv_usbd.c
+    ${Drivers_DIR}/drv_usbh.c
     ${Drivers_DIR}/drv_pulse_encoder.c
     ${Drivers_DIR}/drv_common.c
     CACHE INTERNAL "")
