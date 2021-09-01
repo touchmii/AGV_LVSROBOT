@@ -18,6 +18,7 @@ static rt_err_t can_rx_call(rt_device_t dev, rt_size_t size)
 static void can_rx_thread(void *parameter)
 {
     int i;
+    int size;
     rt_err_t res;
     struct rt_can_msg rxmsg = {0};
 
@@ -47,6 +48,11 @@ static void can_rx_thread(void *parameter)
         rt_sem_take(&rx_sem, RT_WAITING_FOREVER);
         /* 从 CAN 读取一帧数据 */
         rt_device_read(can_dev, 0, &rxmsg, sizeof(rxmsg));
+        size = rt_device_write(can_dev, 0, &rxmsg, sizeof(rxmsg));
+        if (size == 0)
+        {
+            rt_kprintf("can dev write data failed!\n");
+        }
         /* 打印数据 ID 及内容 */
         rt_kprintf("ID:%x", rxmsg.id);
         for (i = 0; i < 8; i++)
