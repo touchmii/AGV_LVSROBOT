@@ -496,6 +496,7 @@ static void pwm_get_channel(void)
 #endif
 #ifdef BSP_USING_PWM8_CH1
     stm32_pwm_obj[PWM8_INDEX].channel |= 1 << 0;
+    __HAL_RCC_TIM8_CLK_ENABLE();
 #endif
 #ifdef BSP_USING_PWM8_CH2
     stm32_pwm_obj[PWM8_INDEX].channel |= 1 << 1;
@@ -508,6 +509,7 @@ static void pwm_get_channel(void)
 #endif
 #ifdef BSP_USING_PWM9_CH1
     stm32_pwm_obj[PWM9_INDEX].channel |= 1 << 0;
+    __HAL_RCC_TIM9_CLK_ENABLE(); //修改处使能定时器时钟
 #endif
 #ifdef BSP_USING_PWM9_CH2
     stm32_pwm_obj[PWM9_INDEX].channel |= 1 << 1;

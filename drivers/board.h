@@ -42,7 +42,7 @@ extern "C"
 
 /*-------------------------- CLOCK CONFIG BEGIN --------------------------*/
 
-#define BSP_CLOCK_SOURCE                  ("HSI")
+#define BSP_CLOCK_SOURCE                  ("HSE")
 #define BSP_CLOCK_SOURCE_FREQ_MHZ         ((int32_t)0)
 #define BSP_CLOCK_SYSTEM_FREQ_MHZ         ((int32_t)168)
 
@@ -78,9 +78,11 @@ extern "C"
 #define BSP_USING_UART3
 #define BSP_UART3_TX_PIN       "PB10"
 #define BSP_UART3_RX_PIN       "PD9"
+// #define BSP_UART3_RX_USING_DMA
 #define BSP_USING_UART4
 #define BSP_UART4_TX_PIN       "PC10"
 #define BSP_UART4_RX_PIN       "PC11"
+#define BSP_UART4_RX_USING_DMA
 #define BSP_USING_UART5
 #define BSP_UART5_TX_PIN       "PC12"
 #define BSP_UART5_RX_PIN       "PD2"
@@ -181,10 +183,18 @@ extern "C"
  *
  */
 
-#define BSP_USING_PWM1
-#define BSP_USING_PWM1_CH1
+// #define BSP_USING_PWM1
+// #define BSP_USING_PWM1_CH1
 // #define BSP_USING_PWM2
 // #define BSP_USING_PWM3
+#define BSP_USING_PWM8
+#define BSP_USING_PWM8_CH1
+#define BSP_USING_PWM8_CH2
+#define BSP_USING_PWM8_CH3
+#define BSP_USING_PWM8_CH4
+#define BSP_USING_PWM9
+#define BSP_USING_PWM9_CH1
+#define BSP_USING_PWM9_CH2
 
 /*-------------------------- PWM CONFIG END --------------------------*/
 
@@ -208,6 +218,9 @@ extern "C"
 #define BSP_USING_ADC1
 #define BSP_USING_ADC2
 #define BSP_USING_ADC3
+
+#define BSP_USING_DAC1
+// #define BSP_USING_DAC2
 
 /*-------------------------- ADC CONFIG END --------------------------*/
 
@@ -246,7 +259,7 @@ extern "C"
 #ifdef BSP_USING_TIM
 #define BSP_USING_TIM1
 #define BSP_USING_TIM2
-#define BSP_USING_TIM4
+// #define BSP_USING_TIM4
 /*#define BSP_USING_TIM15*/
 /*#define BSP_USING_TIM16*/
 /*#define BSP_USING_TIM17*/

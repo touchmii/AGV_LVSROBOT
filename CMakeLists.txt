@@ -46,22 +46,47 @@ set(mfloat-flag "hard")
 add_definitions(
   -DARM_MATH_CM4 -DSOC_SERIES_STM32F4 -DSTM32F407xx -DUSE_HAL_DRIVER
   -Dflash_layout -DDEBUG_DEFAULT_INTERRUPT_HANDLERS)
-set(CMAKE_C_FLAGS
+if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")  
+  set(CMAKE_C_FLAGS
     "-std=c99 -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=${mfloat-flag} -ffunction-sections -fdata-sections"
 )
-set(CMAKE_CXX_FLAGS
+  set(CMAKE_CXX_FLAGS
     " -std=c++11 -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=${mfloat-flag} -ffunction-sections -fdata-sections"
 )
-set(CMAKE_ASM_FLAGS
-    " -c -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=${mfloat-flag} -ffunction-sections -fdata-sections -x assembler-with-cpp -Wa,-mimplicit-it=thumb"
+  set(CMAKE_ASM_FLAGS
+    "  -c -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=${mfloat-flag} -ffunction-sections -fdata-sections -x assembler-with-cpp -Wa,-mimplicit-it=thumb"
 )
+  set(CMAKE_EXE_LINKER_FLAGS
+    " -mcpu=cortex-m4 -mthumb -ffunction-sections -fdata-sections -Wl,--gc-sections,-Map=${CMAKE_PROJECT_NAME}.map,-cref,-u,Reset_Handler -T ${CMAKE_SOURCE_DIR}/linkscripts/STM32F407IG/link.lds"
+)
+elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "ARMClang")
+  # add_definitions(-D__CC_ARM)
+  set(CMAKE_C_FLAGS
+    "-std=c99 -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -D__FPU_PRESENT -ffunction-sections -fdata-sections -Wno-error=armcc-pragma-import"
+)
+  set(CMAKE_CXX_FLAGS
+    "-std=c++11 -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -D__FPU_PRESENT -ffunction-sections -fdata-sections"
+)
+  set(CMAKE_ASM_FLAGS
+    "--cpu=Cortex-M4 --fpu=VFPv4_D16"
+)
+  set(CMAKE_EXE_LINKER_FLAGS_INIT
+    "--cpu=Cortex-M4 --fpu=VFPv4_D16 --strict --summary_stderr \
+    --info summarysizes \
+    --map --load_addr_map_info --xref --callgraph --symbols \
+    --info sizes --info totals --info unused --info veneers \
+    --scatter ${CMAKE_SOURCE_DIR}/linkscripts/STM32F407IG/link.sct"
+)
+  set(__CMAKE_ARMClang_USING_armlink "")
+  message(STATUS "XX ${CMAKE_C_COMPILER_ID}")
+  message(STATUS "LINK ${CMAKE_LINKER}")
+  set(__CMAKE_ARMClang_USING_armlink_WRAPPER "")
+endif()
 
 # set(CMAKE_EXE_LINKER_FLAGS " -Wl,-Map=${CMAKE_PROJECT_NAME}.map
 # -Wl,-gc-sections --specs=nano.specs --specs=nosys.specs,-cref,-u,Reset_Handler
 # -T${CMAKE_SOURCE_DIR}/linkerscripts/STM32F407IG/link.lds" )
-set(CMAKE_EXE_LINKER_FLAGS
-    " -mcpu=cortex-m4 -mthumb -ffunction-sections -fdata-sections -Wl,--gc-sections,-Map=${CMAKE_PROJECT_NAME}.map,-cref,-u,Reset_Handler -T ${CMAKE_SOURCE_DIR}/linkscripts/STM32F407IG/link.lds"
-)
+
 # set(CMAKE_EXE_LINKER_FLAGS " -Wl,-Map=${CMAKE_PROJECT_NAME}.map
 # -Wl,-gc-sections --specs=nano.specs --specs=nosys.specs
 # -T${CMAKE_SOURCE_DIR}/LinkerScripts/STM32F407VE_flash.lds" )
@@ -89,17 +114,22 @@ include_directories(
 file(
   GLOB
   source_files
-  ${HAL_SRCS}
+  # ${HAL_SRCS}
   ${rt-thread_SRCS}
   ${packages_SRCS}
   ${xdrivers_SRC}
   ${PROJECT_SOURCE_DIR}/applications/*.c
-  ${PROJECT_SOURCE_DIR}/rt-thread/libcpu/arm/cortex-m4/context_gcc.S
-  ${PROJECT_SOURCE_DIR}/rt-thread/libcpu/arm/cortex-m4/cpuport.c
-  ${PROJECT_SOURCE_DIR}/libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f407xx.s
+  # ${PROJECT_SOURCE_DIR}/rt-thread/libcpu/arm/cortex-m4/context_gcc.S
+  # ${PROJECT_SOURCE_DIR}/rt-thread/libcpu/arm/cortex-m4/cpuport.c
+  ${PROJECT_SOURCE_DIR}/libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f407xx.S
+  # ${PROJECT_SOURCE_DIR}/libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm/startup_stm32f407xx.s
 )
 
 add_executable(${CMAKE_PROJECT_NAME}.elf ${source_files})
+target_link_libraries(${CMAKE_PROJECT_NAME}.elf
+  HAL 
+  # rt-thread
+)
 
 set(elf_file ${CMAKE_PROJECT_NAME}.elf)
 set(hex_file ${CMAKE_PROJECT_NAME}.hex)
@@ -133,6 +163,15 @@ add_custom_target(${application_name} ALL DEPENDS ${elf_file}-size ${bin_file}
 # stm32f4xx PUBLIC #
 # ${PROJECT_SOURCE_DIR}/STM32F4xx_DSP_StdPeriph_Lib/DSP_Lib/libarm_cortexM4lf_math.a
 # )
+add_custom_target(graphviz ALL
+    COMMAND ${CMAKE_COMMAND} "--graphviz=${CMAKE_PROJECT_NAME}.dot" ..
+    COMMAND dot -Tpng ${CMAKE_PROJECT_NAME}.dot -o ${CMAKE_PROJECT_NAME}.png
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+add_custom_target(graphviz2 ALL
+    COMMAND "ninja -t graph ${CMAKE_PROJECT_NAME}.elf | dot -Tpng -o ${CMAKE_PROJECT_NAME}.png"
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
   # find_program(JLINK JLink PATHS "C:/ProgramFiles (x86)/SEGGER/JLink" DOC

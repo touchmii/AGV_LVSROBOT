@@ -50,6 +50,7 @@ extern "C" {
 #include "config/qspi_config.h"
 #include "config/usbd_config.h"
 #include "config/adc_config.h"
+#include "config/dac_config.h"
 #include "config/tim_config.h"
 #include "config/sdio_config.h"
 #include "config/pwm_config.h"

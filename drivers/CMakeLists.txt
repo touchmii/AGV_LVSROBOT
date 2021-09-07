@@ -5,10 +5,12 @@ set(xdrivers_SRC
     ${Drivers_DIR}/drv_usart.c
     ${Drivers_DIR}/drv_hwtimer.c
     ${Drivers_DIR}/drv_pwm.c
+    ${Drivers_DIR}/drv_pulse_encoderulse.c
     ${Drivers_DIR}/drv_spi.c
     # ${Drivers_DIR}/drv_qspi.c ${Drivers_DIR}/drv_soft_i2c.c
     ${Drivers_DIR}/drv_eth.c
     ${Drivers_DIR}/drv_adc.c
+    ${Drivers_DIR}/drv_dac.c
     ${Drivers_DIR}/drv_can.c
     ${Drivers_DIR}/drv_clk.c
     # ${Drivers_DIR}/drv_pm.c ${Drivers_DIR}/drv_lptim.c

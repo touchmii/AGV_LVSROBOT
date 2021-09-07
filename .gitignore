@@ -40,4 +40,7 @@ cmake-build-debug
 cmake-build-release
 packages
 libraries
-cubemx
+cubemx/Drivers
+cubemx/Inc
+cubemx/MDK-ARM
+cubemx/Src

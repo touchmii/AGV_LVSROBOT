@@ -10,18 +10,16 @@
 
 #include <rtthread.h>
 
-#define DBG_TAG "main"
-#define DBG_LVL DBG_LOG
-#include "cm_backtrace.h"
-#include <rtdbg.h>
 
 #define APPNAME "AGV_RTOS"
 #define HARDWARE_VERSION "V1.0.0"
 #define SOFTWARE_VERSION "V0.0.1"
 
-#define LOG_TAG     "main.c"     // 该模块对应的标签。不定义时，默认：NO_TAG
+#define LOG_TAG     "main"     // 该模块对应的标签。不定义时，默认：NO_TAG
 #define LOG_LVL     LOG_LVL_DBG   // 该模块对应的日志输出级别。不定义时，默认：调试级别
 #include <ulog.h>                 // 必须在 LOG_TAG 与 LOG_LVL 下面
+#include <rtdbg.h>
+#include "cm_backtrace.h"
 
 void w25q128_mount(void) {
   rt_device_t dev;
