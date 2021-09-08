@@ -13,25 +13,18 @@ foreach(define ${RT_CONFIG})
   # separate_arguments(${define}) string(REGEX MATCHALL "[a-zA-Z]+\ |[a-zA-Z]+$"
   # SEXY_LIST "${define}")
   list(LENGTH D_LIST define_len)
-  # message("define_len: ${define_len}") message("1 define ${D_LIST}")
   if(${define_len} STREQUAL 2)
     # list操作不需要${}
     list(GET D_LIST 1 dd1)
     set("${dd1}" CACHE INTERNAL "")
-    # message( "one define: ${dd1}")
   elseif(${define_len} STREQUAL 3)
     list(GET D_LIST 1 dd1)
     list(GET D_LIST 2 dd2)
     set("${dd1}"
         ${dd2}
         CACHE INTERNAL "")
-    # message("two define: ${dd1}=${dd2}")
   endif()
-
-  # foreach(xx ${D_LIST}) message(${xx}) endforeach() message(${define})
 endforeach()
-
-# message(${RT_CONFIG})
 
 
 # if(${CMAKE_BUILD_TYPE} STREQUAL RelWithDebInfo)
@@ -169,7 +162,7 @@ add_custom_target(graphviz ALL
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 add_custom_target(graphviz2 ALL
-    COMMAND "ninja -t graph ${CMAKE_PROJECT_NAME}.elf | dot -Tpng -o ${CMAKE_PROJECT_NAME}.png"
+    COMMAND  "ninja -t graph ${CMAKE_PROJECT_NAME}.elf | dot -Tpng -o ${CMAKE_PROJECT_NAME}.png"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
