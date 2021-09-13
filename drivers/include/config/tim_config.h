@@ -68,8 +68,30 @@ extern "C" {
        .tim_irqn                = TIM4_IRQn,                \
        .name                    = "timer4",                 \
     }
-#endif /* TIM3_CONFIG */
+#endif /* TIM4_CONFIG */
 #endif /* BSP_USING_TIM4 */
+
+#ifdef BSP_USING_TIM5
+#ifndef TIM5_CONFIG
+#define TIM5_CONFIG                                         \
+    {                                                       \
+       .tim_handle.Instance     = TIM5,                     \
+       .tim_irqn                = TIM5_IRQn,                \
+       .name                    = "timer5",                 \
+    }
+#endif /* TIM5_CONFIG */
+#endif /* BSP_USING_TIM5 */
+
+#ifdef BSP_USING_TIM7
+#ifndef TIM7_CONFIG
+#define TIM7_CONFIG                                         \
+    {                                                       \
+       .tim_handle.Instance     = TIM7,                     \
+       .tim_irqn                = TIM7_IRQn,                \
+       .name                    = "timer7",                 \
+    }
+#endif /* TIM7_CONFIG */
+#endif /* BSP_USING_TIM7 */
 
 #ifdef BSP_USING_TIM11
 #ifndef TIM11_CONFIG
@@ -87,7 +109,7 @@ extern "C" {
 #define TIM13_CONFIG                                        \
     {                                                       \
        .tim_handle.Instance     = TIM13,                    \
-       .tim_irqn                = TIM8_UP_TIM13_IRQn,       \
+       .tim_irqn                = TIM13_UP_TIM13_IRQn,       \
        .name                    = "timer13",                \
     }
 #endif /* TIM13_CONFIG */
@@ -98,7 +120,7 @@ extern "C" {
 #define TIM14_CONFIG                                        \
     {                                                       \
        .tim_handle.Instance     = TIM14,                    \
-       .tim_irqn                = TIM8_TRG_COM_TIM14_IRQn,  \
+       .tim_irqn                = TIM14_TRG_COM_TIM14_IRQn,  \
        .name                    = "timer14",                \
     }
 #endif /* TIM14_CONFIG */

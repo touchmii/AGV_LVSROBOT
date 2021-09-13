@@ -47,20 +47,21 @@ static void can_rx_thread(void *parameter)
         /* 阻塞等待接收信号量 */
         rt_sem_take(&rx_sem, RT_WAITING_FOREVER);
         /* 从 CAN 读取一帧数据 */
-        rt_device_read(can_dev, 0, &rxmsg, sizeof(rxmsg));
-        size = rt_device_write(can_dev, 0, &rxmsg, sizeof(rxmsg));
-        if (size == 0)
-        {
-            rt_kprintf("can dev write data failed!\n");
-        }
+        rt_device_read(can_dev, 0, &rxmsg, rxmsg.len);
+        rxmsg.id = 0x299;
+//        size = rt_device_write(can_dev, 0, &rxmsg, sizeof(rxmsg));
+//        if (size == 0)
+//        {
+//            rt_kprintf("can dev write data failed!\n");
+//        }
         /* 打印数据 ID 及内容 */
-        rt_kprintf("ID:%x", rxmsg.id);
-        for (i = 0; i < 8; i++)
-        {
-            rt_kprintf("%2x", rxmsg.data[i]);
-        }
+        rt_kprintf("ID:%x \n", rxmsg.id);
+//        for (i = 0; i < rxmsg.len; i++)
+//        {
+//            rt_kprintf("%2x", rxmsg.data[i]);
+//        }
 
-        rt_kprintf("\n");
+//        rt_kprintf("\n");
     }
 }
 
@@ -95,7 +96,7 @@ int can_sample(int argc, char *argv[])
     res = rt_device_open(can_dev, RT_DEVICE_FLAG_INT_TX | RT_DEVICE_FLAG_INT_RX);
     RT_ASSERT(res == RT_EOK);
     /* 创建数据接收线程 */
-    thread = rt_thread_create("can_rx", can_rx_thread, RT_NULL, 1024, 25, 10);
+    thread = rt_thread_create("can_rx", can_rx_thread, RT_NULL, 2048, 20, 10);
     if (thread != RT_NULL)
     {
         rt_thread_startup(thread);

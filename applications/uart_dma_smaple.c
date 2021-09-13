@@ -11,7 +11,7 @@
 
 struct serial_configure config_dma = RT_SERIAL_CONFIG_DEFAULT;  /* 初始化配置参数 */
 
-#define SAMPLE_UART_NAME       "uart3"      /* 串口设备名称 */
+#define SAMPLE_UART_NAME       "uart4"      /* 串口设备名称 */
 
 /* 串口接收消息结构*/
 struct rx_msg

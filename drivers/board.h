@@ -70,6 +70,7 @@ extern "C"
 #define BSP_USING_UART1
 #define BSP_UART1_TX_PIN       "PB6"
 #define BSP_UART1_RX_PIN       "PB7"
+#define BSP_UART1_TX_USING_DMA
 #define BSP_USING_UART2
 #define BSP_UART2_TX_PIN       "PD5"
 #define BSP_UART2_RX_PIN       "PD6"
@@ -259,6 +260,10 @@ extern "C"
 #ifdef BSP_USING_TIM
 #define BSP_USING_TIM1
 #define BSP_USING_TIM2
+#define BSP_USING_TIM5
+#define BSP_USING_TIM7
+//#define BSP_USING_TIM13
+//#define BSP_USING_TIM14
 // #define BSP_USING_TIM4
 /*#define BSP_USING_TIM15*/
 /*#define BSP_USING_TIM16*/
