@@ -556,157 +556,157 @@ void draw_keyboard()
 	vt_draw_str_at(3, 18, "Input mode: x");
 }
 
-const char *funckeymap(int k)
-{
-	static const char *fcmap[] = {
-		"CTRL+2, CTRL+~",
-		"CTRL+A",
-		"CTRL+B",
-		"CTRL+C",
-		"CTRL+D",
-		"CTRL+E",
-		"CTRL+F",
-		"CTRL+G",
-		"CTRL+H, BACKSPACE",
-		"CTRL+I, TAB",
-		"CTRL+J",
-		"CTRL+K",
-		"CTRL+L",
-		"CTRL+M, ENTER",
-		"CTRL+N",
-		"CTRL+O",
-		"CTRL+P",
-		"CTRL+Q",
-		"CTRL+R",
-		"CTRL+S",
-		"CTRL+T",
-		"CTRL+U",
-		"CTRL+V",
-		"CTRL+W",
-		"CTRL+X",
-		"CTRL+Y",
-		"CTRL+Z",
-		"CTRL+3, ESC, CTRL+[",
-		"CTRL+4, CTRL+\\",
-		"CTRL+5, CTRL+]",
-		"CTRL+6",
-		"CTRL+7, CTRL+/, CTRL+_",
-		"SPACE"
-	};
-	static const char *fkmap[] = {
-		"F1",
-		"F2",
-		"F3",
-		"F4",
-		"F5",
-		"F6",
-		"F7",
-		"F8",
-		"F9",
-		"F10",
-		"F11",
-		"F12",
-		"INSERT",
-		"DELETE",
-		"HOME",
-		"END",
-		"PGUP",
-		"PGDN",
-		"ARROW UP",
-		"ARROW DOWN",
-		"ARROW LEFT",
-		"ARROW RIGHT"
-	};
+// const char *funckeymap(int k)
+// {
+// 	static const char *fcmap[] = {
+// 		"CTRL+2, CTRL+~",
+// 		"CTRL+A",
+// 		"CTRL+B",
+// 		"CTRL+C",
+// 		"CTRL+D",
+// 		"CTRL+E",
+// 		"CTRL+F",
+// 		"CTRL+G",
+// 		"CTRL+H, BACKSPACE",
+// 		"CTRL+I, TAB",
+// 		"CTRL+J",
+// 		"CTRL+K",
+// 		"CTRL+L",
+// 		"CTRL+M, ENTER",
+// 		"CTRL+N",
+// 		"CTRL+O",
+// 		"CTRL+P",
+// 		"CTRL+Q",
+// 		"CTRL+R",
+// 		"CTRL+S",
+// 		"CTRL+T",
+// 		"CTRL+U",
+// 		"CTRL+V",
+// 		"CTRL+W",
+// 		"CTRL+X",
+// 		"CTRL+Y",
+// 		"CTRL+Z",
+// 		"CTRL+3, ESC, CTRL+[",
+// 		"CTRL+4, CTRL+\\",
+// 		"CTRL+5, CTRL+]",
+// 		"CTRL+6",
+// 		"CTRL+7, CTRL+/, CTRL+_",
+// 		"SPACE"
+// 	};
+// 	static const char *fkmap[] = {
+// 		"F1",
+// 		"F2",
+// 		"F3",
+// 		"F4",
+// 		"F5",
+// 		"F6",
+// 		"F7",
+// 		"F8",
+// 		"F9",
+// 		"F10",
+// 		"F11",
+// 		"F12",
+// 		"INSERT",
+// 		"DELETE",
+// 		"HOME",
+// 		"END",
+// 		"PGUP",
+// 		"PGDN",
+// 		"ARROW UP",
+// 		"ARROW DOWN",
+// 		"ARROW LEFT",
+// 		"ARROW RIGHT"
+// 	};
 
-	if (k == TB_KEY_CTRL_8)
-		return "CTRL+8, BACKSPACE 2"; /* 0x7F */
-	else if (k >= TB_KEY_ARROW_RIGHT && k <= 0xFFFF)
-		return fkmap[0xFFFF-k];
-	else if (k <= TB_KEY_SPACE)
-		return fcmap[k];
-	return "UNKNOWN";
-}
+// 	if (k == TB_KEY_CTRL_8)
+// 		return "CTRL+8, BACKSPACE 2"; /* 0x7F */
+// 	else if (k >= TB_KEY_ARROW_RIGHT && k <= 0xFFFF)
+// 		return fkmap[0xFFFF-k];
+// 	else if (k <= TB_KEY_SPACE)
+// 		return fcmap[k];
+// 	return "UNKNOWN";
+// }
 
-void pretty_print_press(struct tb_event *ev)
-{
-	char buf[7];
-	buf[tb_utf8_unicode_to_char(buf, ev->ch)] = '\0';
-	printf_tb(3, 19, TB_WHITE , TB_DEFAULT, "Key: ");
-	printf_tb(8, 19, TB_YELLOW, TB_DEFAULT, "decimal: %d", ev->key);
-	printf_tb(8, 20, TB_GREEN , TB_DEFAULT, "hex:     0x%X", ev->key);
-	printf_tb(8, 21, TB_CYAN  , TB_DEFAULT, "octal:   0%o", ev->key);
-	printf_tb(8, 22, TB_RED   , TB_DEFAULT, "string:  %s", funckeymap(ev->key));
+// void pretty_print_press(struct tb_event *ev)
+// {
+// 	char buf[7];
+// 	buf[tb_utf8_unicode_to_char(buf, ev->ch)] = '\0';
+// 	printf_tb(3, 19, TB_WHITE , TB_DEFAULT, "Key: ");
+// 	printf_tb(8, 19, TB_YELLOW, TB_DEFAULT, "decimal: %d", ev->key);
+// 	printf_tb(8, 20, TB_GREEN , TB_DEFAULT, "hex:     0x%X", ev->key);
+// 	printf_tb(8, 21, TB_CYAN  , TB_DEFAULT, "octal:   0%o", ev->key);
+// 	printf_tb(8, 22, TB_RED   , TB_DEFAULT, "string:  %s", funckeymap(ev->key));
 
-	printf_tb(54, 19, TB_WHITE , TB_DEFAULT, "Char: ");
-	printf_tb(60, 19, TB_YELLOW, TB_DEFAULT, "decimal: %d", ev->ch);
-	printf_tb(60, 20, TB_GREEN , TB_DEFAULT, "hex:     0x%X", ev->ch);
-	printf_tb(60, 21, TB_CYAN  , TB_DEFAULT, "octal:   0%o", ev->ch);
-	printf_tb(60, 22, TB_RED   , TB_DEFAULT, "string:  %s", buf);
+// 	printf_tb(54, 19, TB_WHITE , TB_DEFAULT, "Char: ");
+// 	printf_tb(60, 19, TB_YELLOW, TB_DEFAULT, "decimal: %d", ev->ch);
+// 	printf_tb(60, 20, TB_GREEN , TB_DEFAULT, "hex:     0x%X", ev->ch);
+// 	printf_tb(60, 21, TB_CYAN  , TB_DEFAULT, "octal:   0%o", ev->ch);
+// 	printf_tb(60, 22, TB_RED   , TB_DEFAULT, "string:  %s", buf);
 
-	printf_tb(54, 18, TB_WHITE, TB_DEFAULT, "Modifier: %s",
-			(ev->mod) ? "TB_MOD_ALT" : "none");
+// 	printf_tb(54, 18, TB_WHITE, TB_DEFAULT, "Modifier: %s",
+// 			(ev->mod) ? "TB_MOD_ALT" : "none");
 
-}
+// }
 
-void pretty_print_resize(struct tb_event *ev)
-{
-	printf_tb(3, 19, TB_WHITE, TB_DEFAULT, "Resize event: %d x %d", ev->w, ev->h);
-}
+// void pretty_print_resize(struct tb_event *ev)
+// {
+// 	printf_tb(3, 19, TB_WHITE, TB_DEFAULT, "Resize event: %d x %d", ev->w, ev->h);
+// }
 
-int counter = 0;
+// int counter = 0;
 
-void  pretty_print_mouse(struct tb_event *ev) {
-	printf_tb(3, 19, TB_WHITE, TB_DEFAULT, "Mouse event: %d x %d", ev->x, ev->y);
-	char *btn = "";
-	switch (ev->key) {
-	case TB_KEY_MOUSE_LEFT:
-		btn = "MouseLeft: %d";
-		break;
-	case TB_KEY_MOUSE_MIDDLE:
-		btn = "MouseMiddle: %d";
-		break;
-	case TB_KEY_MOUSE_RIGHT:
-		btn = "MouseRight: %d";
-		break;
-	case TB_KEY_MOUSE_WHEEL_UP:
-		btn = "MouseWheelUp: %d";
-		break;
-	case TB_KEY_MOUSE_WHEEL_DOWN:
-		btn = "MouseWheelDown: %d";
-		break;
-	case TB_KEY_MOUSE_RELEASE:
-		btn = "MouseRelease: %d";
-	}
-	counter++;
-	printf_tb(43, 19, TB_WHITE, TB_DEFAULT, "Key: ");
-	printf_tb(48, 19, TB_YELLOW, TB_DEFAULT, btn, counter);
-}
+// void  pretty_print_mouse(struct tb_event *ev) {
+// 	printf_tb(3, 19, TB_WHITE, TB_DEFAULT, "Mouse event: %d x %d", ev->x, ev->y);
+// 	char *btn = "";
+// 	switch (ev->key) {
+// 	case TB_KEY_MOUSE_LEFT:
+// 		btn = "MouseLeft: %d";
+// 		break;
+// 	case TB_KEY_MOUSE_MIDDLE:
+// 		btn = "MouseMiddle: %d";
+// 		break;
+// 	case TB_KEY_MOUSE_RIGHT:
+// 		btn = "MouseRight: %d";
+// 		break;
+// 	case TB_KEY_MOUSE_WHEEL_UP:
+// 		btn = "MouseWheelUp: %d";
+// 		break;
+// 	case TB_KEY_MOUSE_WHEEL_DOWN:
+// 		btn = "MouseWheelDown: %d";
+// 		break;
+// 	case TB_KEY_MOUSE_RELEASE:
+// 		btn = "MouseRelease: %d";
+// 	}
+// 	counter++;
+// 	printf_tb(43, 19, TB_WHITE, TB_DEFAULT, "Key: ");
+// 	printf_tb(48, 19, TB_YELLOW, TB_DEFAULT, btn, counter);
+// }
 
-void dispatch_press(struct tb_event *ev)
-{
-	if (ev->mod & TB_MOD_ALT) {
-		draw_key(K_LALT, TB_WHITE, TB_RED);
-		draw_key(K_RALT, TB_WHITE, TB_RED);
-	}
+// void dispatch_press(struct tb_event *ev)
+// {
+// 	if (ev->mod & TB_MOD_ALT) {
+// 		draw_key(K_LALT, TB_WHITE, TB_RED);
+// 		draw_key(K_RALT, TB_WHITE, TB_RED);
+// 	}
 
-	struct combo *k = 0;
-	if (ev->key >= TB_KEY_ARROW_RIGHT)
-		k = &func_combos[0xFFFF-ev->key];
-	else if (ev->ch < 128) {
-		if (ev->ch == 0 && ev->key < 128)
-			k = &combos[ev->key];
-		else
-			k = &combos[ev->ch];
-	}
-	if (!k)
-		return;
+// 	struct combo *k = 0;
+// 	if (ev->key >= TB_KEY_ARROW_RIGHT)
+// 		k = &func_combos[0xFFFF-ev->key];
+// 	else if (ev->ch < 128) {
+// 		if (ev->ch == 0 && ev->key < 128)
+// 			k = &combos[ev->key];
+// 		else
+// 			k = &combos[ev->ch];
+// 	}
+// 	if (!k)
+// 		return;
 
-	struct key **keys = k->keys;
-	while (*keys) {
-		draw_key(*keys, TB_WHITE, TB_RED);
-		keys++;
-	}
-}
+// 	struct key **keys = k->keys;
+// 	while (*keys) {
+// 		draw_key(*keys, TB_WHITE, TB_RED);
+// 		keys++;
+// 	}
+// }
 
 int tb_keyboard(int argc, char **argv)
 {
@@ -720,7 +720,7 @@ int tb_keyboard(int argc, char **argv)
 	// }
 
 	// tb_select_input_mode(TB_INPUT_ESC | TB_INPUT_MOUSE);
-	struct tb_event ev;
+	// struct tb_event ev;
 
 	// tb_clear();
 	// vt_set_terminal_size(100, 60);

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(AGV_RTOS C CXX ASM)
+project(AGV_LVSROBOT C CXX ASM)
 
 set(DEVICE_FAMILY STM32F40_41xxx)
 set(Cortex_FAMILY ARM_MATH_CM4)
@@ -110,7 +110,7 @@ file(
   # ${HAL_SRCS}
   ${rt-thread_SRCS}
   ${packages_SRCS}
-  ${xdrivers_SRC}
+  ${xdrivers_SRCS}
   ${PROJECT_SOURCE_DIR}/applications/*.c
   # ${PROJECT_SOURCE_DIR}/rt-thread/libcpu/arm/cortex-m4/context_gcc.S
   # ${PROJECT_SOURCE_DIR}/rt-thread/libcpu/arm/cortex-m4/cpuport.c
@@ -242,11 +242,11 @@ if(EXISTS "${JLINK}")
       COMMAND
         ${TERMINAL} "${PROJECT_SOURCE_DIR}/runJLinkGDBServer${COMMAND_SUFFIX}"
         ${POST_OPTIONS}
-      COMMAND ${TERMINAL} "${PROJECT_SOURCE_DI}/runJLinkExe${COMMAND_SUFFIX}"
+      COMMAND ${TERMINAL} "${PROJECT_SOURCE_DIR}/runJLinkExe${COMMAND_SUFFIX}"
               ${POST_OPTIONS}
       COMMAND cmake -E sleep 2
       COMMAND
-        ${TERMINAL} "${PROJECT_SOURCE_DI}/runJLinkRTTClient${COMMAND_SUFFIX}"
+        ${TERMINAL} "${PROJECT_SOURCE_DIR}/runJLinkRTTClient${COMMAND_SUFFIX}"
         ${POST_OPTIONS}
       COMMENT "started JLink commands"
       VERBATIM)
@@ -254,11 +254,11 @@ if(EXISTS "${JLINK}")
   if(EXISTS "${JLINKRTTCLIENT}")
     add_custom_target(
       START_JLINK_RTT ALL
-      COMMAND ${TERMINAL} "${PROJECT_SOURCE_DI}/runJLinkExe${COMMAND_SUFFIX}"
+      COMMAND ${TERMINAL} "${PROJECT_SOURCE_DIR}/runJLinkExe${COMMAND_SUFFIX}"
               ${POST_OPTIONS}
       COMMAND cmake -E sleep 2
       COMMAND
-        ${TERMINAL} "${PROJECT_SOURCE_DI}/runJLinkRTTClient${COMMAND_SUFFIX}"
+        ${TERMINAL} "${PROJECT_SOURCE_DIR}/runJLinkRTTClient${COMMAND_SUFFIX}"
         ${POST_OPTIONS}
       COMMENT "started JLink RTT terminal"
       VERBATIM)
@@ -271,11 +271,11 @@ if(EXISTS "${JLINK}")
   if(EXISTS "${JLINKGDBSERVER}")
     add_custom_target(
       START_JLINK_GDBSERVER ALL
-      COMMAND ${TERMINAL} "${PROJECT_SOURCE_DI}/runJLinkExe${COMMAND_SUFFIX}"
+      COMMAND ${TERMINAL} "${PROJECT_SOURCE_DIR}/runJLinkExe${COMMAND_SUFFIX}"
               ${POST_OPTIONS}
       COMMAND cmake -E sleep 2
       COMMAND
-        ${TERMINAL} "${PROJECT_SOURCE_DI}/runJLinkGDBServer${COMMAND_SUFFIX}"
+        ${TERMINAL} "${PROJECT_SOURCE_DIR}/runJLinkGDBServer${COMMAND_SUFFIX}"
         ${POST_OPTIONS}
       COMMENT "started JLink GDB server"
       VERBATIM)

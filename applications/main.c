@@ -10,7 +10,7 @@
 
 #include <rtthread.h>
 
-#define APPNAME "AGV_RTOS"
+#define APPNAME "AGV_LVSROBOT"
 #define HARDWARE_VERSION "V1.0.0"
 #define SOFTWARE_VERSION "V0.0.1"
 

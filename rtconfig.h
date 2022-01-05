@@ -128,28 +128,28 @@
 #define RT_USING_I2C
 #define RT_USING_I2C_BITOPS
 #define RT_USING_PIN
-#define RT_USING_ADC
-#define RT_USING_DAC
-#define RT_USING_PWM
-#define RT_USING_PULSE_ENCODER
-#define BSP_USING_PULSE_ENCODER3
-#define BSP_USING_PULSE_ENCODER4
+// #define RT_USING_ADC
+// #define RT_USING_DAC
+// #define RT_USING_PWM
+// #define RT_USING_PULSE_ENCODER
+// #define BSP_USING_PULSE_ENCODER3
+// #define BSP_USING_PULSE_ENCODER4
 #define RT_USING_RTC
 #define RT_USING_SPI
 #define RT_USING_SFUD
 #define RT_SFUD_USING_SFDP
 #define RT_SFUD_USING_FLASH_INFO_TABLE
 #define RT_SFUD_SPI_MAX_HZ 50000000
-#define BSP_USING_ETH
+// #define BSP_USING_ETH
 
 /* Using USB */
 
-#define RT_USING_USB_HOST
-#define RT_USBH_MSTORAGE
-#define UDISK_MOUNTPOINT "/"
-#define RT_USBD_THREAD_STACK_SZ 4096
-#define RT_USBH_HID
-#define RT_USBH_HID_KEYBOARD
+// #define RT_USING_USB_HOST
+// #define RT_USBH_MSTORAGE
+// #define UDISK_MOUNTPOINT "/"
+// #define RT_USBD_THREAD_STACK_SZ 4096
+// #define RT_USBH_HID
+// #define RT_USBH_HID_KEYBOARD
 /* end of Using USB */
 /* end of Device Drivers */
 
@@ -169,14 +169,14 @@
 
 /* Socket abstraction layer */
 
-#define RT_USING_SAL
-#define SAL_USING_LWIP
-#define SAL_USING_POSIX
+// #define RT_USING_SAL
+// #define SAL_USING_LWIP
+// #define SAL_USING_POSIX
 
 /* end of Socket abstraction layer */
 
 /* Network interface device */
-#define RT_USING_NETDEV
+// #define RT_USING_NETDEV
 #define NETDEV_USING_IFCONFIG
 #define NETDEV_USING_PING
 #define NETDEV_USING_NETSTAT
@@ -187,8 +187,8 @@
 
 /* light weight TCP/IP stack */
 
-#define RT_USING_LWIP
-#define RT_USING_LWIP202
+// #define RT_USING_LWIP
+// #define RT_USING_LWIP202
 #define RT_LWIP_IGMP
 #define RT_LWIP_ICMP
 #define RT_LWIP_DNS
@@ -274,7 +274,7 @@
 /* end of Wiced WiFi */
 /* end of Wi-Fi */
 
-#define PKG_USING_NETUTILS
+// #define PKG_USING_NETUTILS
 #define PKG_NETUTILS_IPERF
 #define PKG_NETUTILS_NETIO
 #define PKG_NETUTILS_NTP

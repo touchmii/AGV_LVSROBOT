@@ -1,6 +1,6 @@
 #include <rtthread.h>
 #include <rtdevice.h>
-#include "ps2.h"
+// #include "ps2.h"
 #include "string.h"
 #include "stdlib.h"
 
@@ -31,7 +31,7 @@ static char datt[32];
 
 #define STEER_ID  2
 #define TURN_ID  3
-#define LOC_S 1000*17896
+#define LOC_S 500*17896
 rt_uint8_t RESET_ERROR[8] = {0x2b, 0x40, 0x60, 0x00, 0x86, 0x00, 0x00, 0x00};
 rt_uint8_t CTRL_F[8] = {0x2b, 0x40, 0x60, 0x00, 0x0F, 0x00, 0x00, 0x00};
 rt_uint8_t SPEED_MODE[8] = {0x2f, 0x60, 0x60, 0x00, 0x03, 0x00, 0x00, 0x00};
@@ -39,7 +39,7 @@ rt_uint8_t LOC_MODE[8] = {0x2f, 0x60, 0x60, 0x00, 0x01, 0x00, 0x00, 0x00};
 rt_uint8_t SPEED_150[8] = {0x23, 0xFF, 0x60, 0x00, 0x00, 0x40, 0x06, 0x00};
 rt_uint8_t SPEED_200[8] = {0x2b, 0xF0, 0x2F, 0x09, 0xc8, 0x00, 0x00, 0x00};
 rt_uint8_t LOC[8] = {0x23, 0x7A, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00};
-int LOC_SPEED[8] = {0x23, 0x81, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00};
+rt_uint8_t LOC_SPEED[8] = {0x23, 0x81, 0x60, 0x00, 0x89, 0x88, 0x88, 0x00};
 
 
 
@@ -55,12 +55,25 @@ static rt_device_t serial;
 static struct rt_messagequeue rx_mq;
 
 static void steer_motor_init(rt_device_t can) {
+  rt_kprintf("init kinco motor. \n");
+  rt_thread_delay(5000);
     struct rt_can_msg msg = {0};
     int size = 0;
     msg.id = 0x600 + STEER_ID;
     msg.ide = RT_CAN_STDID;
     msg.rtr = RT_CAN_DTR;
     msg.len = 6;
+    for(int i=0; i<8; i++){
+      msg.data[i] = SPEED_MODE[i];
+    }
+    struct rt_can_msg loc_speed_msg = {0};
+    loc_speed_msg.id = 0x600 + TURN_ID;
+    loc_speed_msg.ide = RT_CAN_STDID;
+    loc_speed_msg.rtr = RT_CAN_DTR;
+    loc_speed_msg.len = 8;
+    for(int i=0; i<8; i++){
+      loc_speed_msg.data[i] = LOC_SPEED[i];
+    }
     struct rt_can_msg speed_msg = {0};
     speed_msg.id = 0x600 + STEER_ID;
     speed_msg.ide = RT_CAN_STDID;
@@ -99,6 +112,7 @@ static void steer_motor_init(rt_device_t can) {
     size = rt_device_write(can, 0, &msg, sizeof(msg));
     rt_thread_delay(1000);
 //    msg.data = CTRL_F;
+    msg.id = 0x600 + STEER_ID;
     for(int i=0; i<8; i++){
       msg.data[i] = CTRL_F[i];
     }
@@ -122,14 +136,17 @@ static void steer_motor_init(rt_device_t can) {
     size = rt_device_write(can, 0, &msg, sizeof(msg));
     rt_thread_delay(1000);
     // set loc speed
-    for(int i=0; i<8; i++){
-      msg.data[i] = LOC_SPEED[i];
+    for(int j=0; j<8; j++){
+      msg.data[j] = LOC_SPEED[j];
     }
-    msg.data[4] = LOC_S & 0xFF;
-    msg.data[5] = LOC_S >> 8 & 0xFF;
-    msg.data[6] = LOC_S >> 16 & 0xFF;
-    msg.data[7] = LOC_S >> 24 & 0xFF;
-    size = rt_device_write(can, 0, &msg, sizeof(msg));
+    msg.len = 8;
+//  msg.data[6] = 0x88;
+//    rt_uint32_t loc_s = 8947849;
+//    msg.data[4] = loc_s & 0xFF;
+//    msg.data[5] = loc_s >> 8 & 0xFF;
+//    msg.data[6] = loc_s >> 16 & 0xFF;
+//    msg.data[7] = loc_s >> 24 & 0xFF;
+    size = rt_device_write(can, 0, &loc_speed_msg, sizeof(loc_speed_msg));
     rt_thread_delay(1000);
 
 
@@ -142,8 +159,12 @@ static void steer_motor_init(rt_device_t can) {
     size = rt_device_write(can, 0, &msg, sizeof(msg));
     // go home F -> 1F
     rt_thread_delay(100);
-
     msg.data[4] = 0x3F;
+    size = rt_device_write(can, 0, &msg, sizeof(msg));
+    // 103F
+    rt_thread_delay(100);
+    msg.data[4] = 0x3F;
+    msg.data[5] = 0x10;
     size = rt_device_write(can, 0, &msg, sizeof(msg));
 
 
@@ -163,13 +184,15 @@ static void steer_motor_init(rt_device_t can) {
     int dd = 0;
     int loc_inc = 0;
     while(1) {
-      rt_thread_delay(100);
       rt_kprintf("speed: %d, loc: %d \n", steer_speed, trun_loc);
+      rt_thread_delay(100);
+
       speed_msg.data[4] = steer_speed*10 & 0xFF;
       speed_msg.data[5] = steer_speed*10 >> 8 & 0xFF;
       size = rt_device_write(can, 0, &speed_msg, sizeof(msg));
-//      dd++;
-      loc_inc = trun_loc * TRUN_INC;
+
+      rt_thread_delay(100);
+      loc_inc = -trun_loc * TRUN_INC;
       loc_msg.data[4] = loc_inc & 0xFF;
       loc_msg.data[5] = loc_inc >> 8 & 0xFF;
       loc_msg.data[6] = loc_inc >> 16 & 0xFF;
@@ -255,6 +278,7 @@ static void serial_thread_entry(void *parameter)
   int xx = 0;
   int tt = 0;
   rt_bool_t speed_button;
+  rt_bool_t trun_button;
 
 
   while (1)
@@ -262,9 +286,10 @@ static void serial_thread_entry(void *parameter)
     rt_memset(&msg, 0, sizeof(msg));
     /* 从消息队列中读取消息*/
     result = rt_mq_recv(&rx_mq, &msg, sizeof(msg), RT_WAITING_FOREVER);
-    if (tt % 20 == 0) {
+    if (tt % 40 == 0) {
       a,b,c,d = 127,127,127,127;
       speed_button = 0;
+      trun_button = 0;
       if (tt > 60000) {
         tt = 1;
       }
@@ -283,6 +308,12 @@ static void serial_thread_entry(void *parameter)
         if( rx_buffer[0] == 'M') {
 
           speed_button = 1;
+        } else if (rx_buffer[0] == 'E') {
+          trun_button = 1;
+        }
+        if(rx_buffer[1] == 'W' || rx_buffer[1] == 'Q') {
+          rt_strncpy(data+xx, rx_buffer+1, rx_length-1);
+          xx += rx_length;
         }
         rt_kprintf("%s\n",rx_buffer);
       } else if ( rx_buffer[rx_length-1] == '\n') {
@@ -333,9 +364,9 @@ static void serial_thread_entry(void *parameter)
 
 
 
-//        rt_kprintf("left x: %d, left y: %d, right x: %d, right y: %d \n", a, b, c, d);
+        rt_kprintf("left x: %d, left y: %d, right x: %d, right y: %d \n", a, b, c, d);
         steer_speed = (127 - a)*(1+speed_button);
-        trun_loc = d - 127;
+        trun_loc = (d - 127)/3*(1+trun_button);
       } else {
         rt_strncpy(data+xx, rx_buffer, rx_length);
         xx += rx_length;
@@ -409,7 +440,7 @@ int motor_controller(int argc, char *argv[]) {
     }
   /* 以中断接收及发送方式打开 CAN 设备 */
   int res = rt_device_open(can_dev, RT_DEVICE_FLAG_INT_TX);
-  rt_thread_t thread2 = rt_thread_create("motor", steer_motor_init, can_dev, 1024, 25, 10);
+  rt_thread_t thread2 = rt_thread_create("motor", steer_motor_init, can_dev, 2048, 20, 10);
   if (thread != RT_NULL)
   {
     rt_thread_startup(thread2);

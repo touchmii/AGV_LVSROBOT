@@ -652,6 +652,10 @@ void CAN1_TX_IRQHandler(void)
         /* Write 0 to Clear transmission status flag RQCPx */
         SET_BIT(hcan->Instance->TSR, CAN_TSR_RQCP2);
     }
+    else
+    {
+      rt_hw_can_isr(&drv_can1.device, RT_CAN_EVENT_TX_FAIL | 0 << 8);
+    }
     rt_interrupt_leave();
 }
 
